@@ -1,0 +1,28 @@
+// This is your Prisma schema file,
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Member {
+  id        Int          @id @default(autoincrement())
+  name      String
+  email     String       @unique
+  role      String       @default("Member")
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+  records   Attendance[]
+}
+
+model Attendance {
+  id        Int      @id @default(autoincrement())
+  date      DateTime
+  status    String
+  memberId  Int
+  member    Member   @relation(fields: [memberId], references: [id])
+  createdAt DateTime @default(now())
+}
